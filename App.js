@@ -1,47 +1,63 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import Theme from './src/theme';
-import { widthPercentageToDP } from 'react-native-responsive-screen';
-const App = () => {
+import * as React from 'react';
+import { View, Text, Button } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+function DetailsScreen() {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.quicksandRegular}>
-        This text uses a quick sand font
-      </Text>
-      <Text style={styles.quicksandLight}>
-        This text uses a quick sand light font
-      </Text>
-      <Text style={styles.ralewayThin}>
-        This text uses a thin italic raleway font
-      </Text>
-      <Text style={styles.ralewayItalic}>
-        This text uses a thin italic raleway font
-      </Text>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+      <Button
+        title="Go to Details... again"
+        onPress={() => navigation.push('Details')}
+      />
+      <Button title="Go back" onPress={() => navigation.goBack()} />
+      <Button title="Go to Home" onPress={() => navigation.popTo('Home')} />
+      <Button
+        title="Go back to first screen in stack"
+        onPress={() => navigation.popToTop()}
+      />
     </View>
   );
-};
-export default App;
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'lavender',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  quicksandLight: {
-    fontFamily: Theme.fonts.FONT_NUNITO_REGULAR,
-    fontSize: widthPercentageToDP(5),
-  },
-  quicksandRegular: {
-    fontFamily: Theme.fonts.FONT_NUNITO_BOLD,
-    fontSize: widthPercentageToDP(5),
-  },
-  ralewayItalic: {
-    fontFamily: Theme.fonts.FONT_NUNITO_EXTRABOLD,
-    fontSize: widthPercentageToDP(5),
-  },
-  ralewayThin: {
-    fontFamily: Theme.fonts.FONT_NUNITO_EXTRABOLD_ITALIC,
-    fontSize: widthPercentageToDP(5),
-  },
-});
+}
+function HomeScreen() {
+  const navigation = useNavigation();
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+function RootStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: { backgroundColor: 'tomato' },
+      }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ title: 'Overview' }}
+      />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <RootStack />
+    </NavigationContainer>
+  );
+}
