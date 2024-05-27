@@ -2,5 +2,7 @@ export const Constants = {
     HOME: "Home",
     ACTIVITIES: "Activities",
     LIBRARY: "Library",
-    DASHBOARD: "Dashboard"
+    DASHBOARD: "Dashboard",
+    EXPERIENCES: "Experiences",
+    JOURNEYS: "Journeys"
 }

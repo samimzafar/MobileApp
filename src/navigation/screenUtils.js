@@ -5,5 +5,7 @@ export const ScreenNames = {
     HOME: "home",
     LIBRARY: "library",
     ACTIVITIES: "activities",
-    DASHBOARD: "dashboard"
+    DASHBOARD: "dashboard",
+    EXPERIENCES: "experiences",
+    JOURNEYS: "journeys"
 }

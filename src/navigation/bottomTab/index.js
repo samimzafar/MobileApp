@@ -5,7 +5,7 @@ import Library from '../../screens/library';
 import Activities from '../../screens/activities';
 import Dashboard from '../../screens/dashboard';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { ActivitiesTabIconSvg, DashboardTabIconSvg, HomeTabIconSvg, LibraryTabIconSvg } from '../../components/svg';
+import { ActivitiesTabIconSvg, DashboardTabIconSvg, HomeTabIconSvg, JourneyTabIconSvg, LibraryTabIconSvg } from '../../components/svg';
 import Theme from '../../theme';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import React from 'react';
@@ -23,16 +23,16 @@ function BottomTabStackNavigator() {
         },
         {
             id: 1,
-            name: ScreenNames.LIBRARY,
+            name: ScreenNames.JOURNEYS,
             component: Library,
-            title: Constants.LIBRARY,
-            icon: (bgColor) => <LibraryTabIconSvg bgColor={bgColor} />
+            title: Constants.JOURNEYS,
+            icon: (bgColor) => <JourneyTabIconSvg bgColor={bgColor} />
         },
         {
             id: 2,
-            name: ScreenNames.ACTIVITIES,
+            name: ScreenNames.EXPERIENCES,
             component: Activities,
-            title: Constants.ACTIVITIES,
+            title: Constants.EXPERIENCES,
             icon: (bgColor) => <ActivitiesTabIconSvg bgColor={bgColor} />
         },
         {

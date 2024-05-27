@@ -1,5 +1,5 @@
 import * as React from "react"
-import Svg, { Path } from "react-native-svg"
+import Svg, { ClipPath, Defs, G, Path } from "react-native-svg"
 
 export const HomeTabIconSvg = ({ bgColor }) => {
     return (
@@ -102,6 +102,44 @@ export const DashboardTabIconSvg = ({ bgColor }) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+        </Svg>
+    )
+}
+
+export const JourneyTabIconSvg = ({ bgColor }) => {
+    return (
+        <Svg
+            width={33}
+            height={32}
+            viewBox="0 0 33 32"
+            fill="none"
+        >
+            <G clipPath="url(#clip0_9732_41199)">
+                <Path
+                    opacity={0.2}
+                    d="M25.625 28a3 3 0 100-6 3 3 0 000 6z"
+                    fill={bgColor}
+                />
+                <Path
+                    d="M25.625 28a3 3 0 100-6 3 3 0 000 6z"
+                    stroke={bgColor}
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+                <Path
+                    d="M9.625 7h12a4 4 0 110 8h-12a5 5 0 000 10h13"
+                    stroke={bgColor}
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+            </G>
+            <Defs>
+                <ClipPath id="clip0_9732_41199">
+                    <Path fill="#fff" transform="translate(.625)" d="M0 0H32V32H0z" />
+                </ClipPath>
+            </Defs>
         </Svg>
     )
 }
