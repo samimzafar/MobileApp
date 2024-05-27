@@ -1,4 +1,8 @@
 const Theme = {
+    colors: {
+        COLOR_TEXT: "rgba(135, 135, 135, 1)",
+        SKY_BLUE_COLOR: "rgba(91, 174, 252, 1)"
+    },
     fonts: {
         FONT_NUNITO_BOLD: 'Nunito-Bold',
         FONT_NUNITO_MEDIUM: 'Nunito-Medium',
@@ -10,6 +14,9 @@ const Theme = {
         FONT_NUNITO_REGULAR_ITALIC: 'Nunito-Italic',
         FONT_NUNITO_SEMIBOLD_ITALIC: 'Nunito-SemiBoldItalic',
         FONT_NUNITO_EXTRABOLD_ITALIC: 'Nunito-ExtraBoldItalic',
+    },
+    icons: {
+        homeIcon: require("../assets/images/checkCircle.png")
     }
 };
 export default Theme;
