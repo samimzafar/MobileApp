@@ -7,6 +7,9 @@ function RootStackNavigation() {
     return (
         <RootStack.Navigator>
             <RootStack.Screen
+                options={{
+                    headerShown: false
+                }}
                 name={ScreenStack.BOTTOM_TAB_STACK}
                 component={BottomTabStackNavigator}
             />

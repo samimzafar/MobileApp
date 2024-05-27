@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { ClipPath, Defs, G, Path } from "react-native-svg"
 
-export const HomeTabIconSvg = ({ bgColor }) => {
+const HomeTabIconSvg = ({ bgColor }) => {
     return (
         <Svg
             width={33}
@@ -30,7 +30,7 @@ export const HomeTabIconSvg = ({ bgColor }) => {
         </Svg>
     )
 }
-export const LibraryTabIconSvg = ({ bgColor }) => {
+const LibraryTabIconSvg = ({ bgColor }) => {
     return (
         <Svg
             width={33}
@@ -53,7 +53,7 @@ export const LibraryTabIconSvg = ({ bgColor }) => {
         </Svg>
     )
 }
-export const ActivitiesTabIconSvg = ({ bgColor }) => {
+const ActivitiesTabIconSvg = ({ bgColor }) => {
     return (
         <Svg
             width={33}
@@ -76,7 +76,7 @@ export const ActivitiesTabIconSvg = ({ bgColor }) => {
         </Svg>
     )
 }
-export const DashboardTabIconSvg = ({ bgColor }) => {
+const DashboardTabIconSvg = ({ bgColor }) => {
     return (
         <Svg
             width={33}
@@ -106,7 +106,7 @@ export const DashboardTabIconSvg = ({ bgColor }) => {
     )
 }
 
-export const JourneyTabIconSvg = ({ bgColor }) => {
+const JourneyTabIconSvg = ({ bgColor }) => {
     return (
         <Svg
             width={33}
@@ -142,4 +142,72 @@ export const JourneyTabIconSvg = ({ bgColor }) => {
             </Defs>
         </Svg>
     )
+}
+const SortIconSvg = (props) => {
+    return (
+        <Svg
+            width={40}
+            height={40}
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            {...props}
+        >
+            <G clipPath="url(#clip0_9732_41985)">
+                <Path
+                    opacity={0.2}
+                    d="M22.5 26.25l6.25 6.25L35 26.25H22.5z"
+                    fill="#fff"
+                />
+                <Path
+                    d="M7.5 20h11.25M7.5 10h21.25M7.5 30h8.75M22.5 26.25l6.25 6.25L35 26.25H22.5zM28.75 26.25V17.5"
+                    stroke="#fff"
+                    strokeWidth={2.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+            </G>
+            <Defs>
+                <ClipPath id="clip0_9732_41985">
+                    <Path fill="#fff" d="M0 0H40V40.0001H0z" />
+                </ClipPath>
+            </Defs>
+        </Svg>
+    )
+}
+const ArrowIconSvg = (props) => {
+    return (
+        <Svg
+            width={40}
+            height={40}
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            {...props}
+        >
+            <G
+                clipPath="url(#clip0_9732_41983)"
+                stroke="#fff"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            >
+                <Path d="M6.25 20h27.5M17.5 8.75L6.25 20 17.5 31.25" />
+            </G>
+            <Defs>
+                <ClipPath id="clip0_9732_41983">
+                    <Path fill="#fff" d="M0 0H40V40H0z" />
+                </ClipPath>
+            </Defs>
+        </Svg>
+    )
+}
+export {
+    HomeTabIconSvg,
+    LibraryTabIconSvg,
+    ActivitiesTabIconSvg,
+    DashboardTabIconSvg,
+    JourneyTabIconSvg,
+    ArrowIconSvg,
+    SortIconSvg
 }

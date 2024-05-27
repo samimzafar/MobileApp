@@ -2,15 +2,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ScreenNames, ScreenStack } from '../screenUtils';
 import Home from '../../screens/home';
 import Library from '../../screens/library';
-import Activities from '../../screens/activities';
 import Dashboard from '../../screens/dashboard';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { ActivitiesTabIconSvg, DashboardTabIconSvg, HomeTabIconSvg, JourneyTabIconSvg, LibraryTabIconSvg } from '../../components/svg';
 import Theme from '../../theme';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import React from 'react';
 import { Constants } from '../../utils/AppConst';
 import { SizeClass } from '../../utils/SizeClass';
+import Experiences from '../../screens/experiences';
+import { ActivitiesTabIconSvg, DashboardTabIconSvg, HomeTabIconSvg, JourneyTabIconSvg, SortIconSvg } from '../../assets/svg';
 const BottomTab = createBottomTabNavigator();
 function BottomTabStackNavigator() {
     const tabsList = [
@@ -31,7 +31,7 @@ function BottomTabStackNavigator() {
         {
             id: 2,
             name: ScreenNames.EXPERIENCES,
-            component: Activities,
+            component: Experiences,
             title: Constants.EXPERIENCES,
             icon: (bgColor) => <ActivitiesTabIconSvg bgColor={bgColor} />
         },
@@ -47,7 +47,6 @@ function BottomTabStackNavigator() {
         <BottomTab.Navigator
             name={ScreenStack.BOTTOM_TAB_STACK}
             screenOptions={{
-                headerShown: false,
                 tabBarStyle: styles.tabBarStyle,
             }}
         >
@@ -63,6 +62,8 @@ function BottomTabStackNavigator() {
                             tabBarLabel: ({ focused }) => (
                                 <Text style={styles.tabTitleStyle(focused)}>{tab.title}</Text>
                             ),
+                            headerShown: false,
+
                         }}
                         key={index}
                     />

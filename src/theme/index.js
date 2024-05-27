@@ -16,7 +16,8 @@ const Theme = {
         FONT_NUNITO_EXTRABOLD_ITALIC: 'Nunito-ExtraBoldItalic',
     },
     icons: {
-        homeIcon: require("../assets/images/checkCircle.png")
+        homeIcon: require("../assets/images/checkCircle.png"),
+        blueHeader: require("../assets/images/blueHeader.png")
     }
 };
 export default Theme;
