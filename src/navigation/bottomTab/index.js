@@ -4,7 +4,7 @@ import Home from '../../screens/home';
 import Library from '../../screens/library';
 import Activities from '../../screens/activities';
 import Dashboard from '../../screens/dashboard';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { ActivitiesTabIconSvg, DashboardTabIconSvg, HomeTabIconSvg, LibraryTabIconSvg } from '../../components/svg';
 import Theme from '../../theme';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -16,8 +16,6 @@ function BottomTabStackNavigator() {
     const tabsList = [
         {
             id: 0,
-            activeColor: Theme.colors.SKY_BLUE_COLOR,
-            inactiveIcon: Theme.colors.COLOR_TEXT,
             name: ScreenNames.HOME,
             component: Home,
             title: Constants.HOME,
@@ -25,8 +23,6 @@ function BottomTabStackNavigator() {
         },
         {
             id: 1,
-            activeColor: Theme.colors.SKY_BLUE_COLOR,
-            inactiveIcon: Theme.colors.COLOR_TEXT,
             name: ScreenNames.LIBRARY,
             component: Library,
             title: Constants.LIBRARY,
@@ -34,8 +30,6 @@ function BottomTabStackNavigator() {
         },
         {
             id: 2,
-            activeColor: Theme.colors.SKY_BLUE_COLOR,
-            inactiveIcon: Theme.colors.COLOR_TEXT,
             name: ScreenNames.ACTIVITIES,
             component: Activities,
             title: Constants.ACTIVITIES,
@@ -43,8 +37,6 @@ function BottomTabStackNavigator() {
         },
         {
             id: 3,
-            activeColor: Theme.colors.SKY_BLUE_COLOR,
-            inactiveIcon: Theme.colors.COLOR_TEXT,
             name: ScreenNames.DASHBOARD,
             component: Dashboard,
             title: Constants.DASHBOARD,
@@ -65,11 +57,11 @@ function BottomTabStackNavigator() {
                         options={{
                             tabBarIcon: ({ focused }) => (
                                 <View style={styles.tabIconView}>
-                                    {tab.icon(focused ? tab.activeColor : tab.inactiveIcon)}
+                                    {tab.icon(focused ? Theme.colors.SKY_BLUE_COLOR : Theme.colors.COLOR_TEXT)}
                                 </View>
                             ),
                             tabBarLabel: ({ focused }) => (
-                                <Text style={styles.tabTitleStyle(focused, tab)}>{tab.title}</Text>
+                                <Text style={styles.tabTitleStyle(focused)}>{tab.title}</Text>
                             ),
                         }}
                         key={index}
@@ -91,8 +83,8 @@ const styles = StyleSheet.create({
     tabIconView: {
         marginBottom: hp(Platform.OS == 'ios' ? 1.85 : 1)
     },
-    tabTitleStyle: (focused, tab) => ({
-        color: focused ? tab.activeColor : tab.inactiveIcon,
+    tabTitleStyle: (focused) => ({
+        color: focused ? Theme.colors.SKY_BLUE_COLOR : Theme.colors.COLOR_TEXT,
         fontFamily: Theme.fonts.FONT_NUNITO_BOLD,
         fontSize: SizeClass.scaleFont(2.85),
         letterSpacing: wp(.10),
