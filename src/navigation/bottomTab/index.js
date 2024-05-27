@@ -10,7 +10,7 @@ import React from 'react';
 import { Constants } from '../../utils/AppConst';
 import { SizeClass } from '../../utils/SizeClass';
 import Experiences from '../../screens/experiences';
-import { ActivitiesTabIconSvg, DashboardTabIconSvg, HomeTabIconSvg, JourneyTabIconSvg, SortIconSvg } from '../../assets/svg';
+import { ActivitiesTabIconSvg, DashboardTabIconSvg, HomeTabIconSvg, JourneyTabIconSvg } from '../../assets/svg';
 const BottomTab = createBottomTabNavigator();
 function BottomTabStackNavigator() {
     const tabsList = [

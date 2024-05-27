@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabStackNavigator from './bottomTab';
-import { ScreenStack } from './screenUtils';
+import { ScreenNames, ScreenStack } from './screenUtils';
+import Activities from '../screens/activities';
 const RootStack = createNativeStackNavigator();
 function RootStackNavigation() {
     return (
@@ -12,6 +13,13 @@ function RootStackNavigation() {
                 }}
                 name={ScreenStack.BOTTOM_TAB_STACK}
                 component={BottomTabStackNavigator}
+            />
+            <RootStack.Screen
+                options={{
+                    headerShown: false
+                }}
+                name={ScreenNames.ACTIVITIES}
+                component={Activities}
             />
         </RootStack.Navigator>
     );

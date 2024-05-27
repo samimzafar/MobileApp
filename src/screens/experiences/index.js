@@ -4,11 +4,14 @@ import { Header } from '../../components/Header'
 import { Constants } from '../../utils/AppConst'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Theme from '../../theme';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNames } from '../../navigation/screenUtils';
 const { width } = Dimensions.get('window');
 const itemWidth = width * 0.8; // 80% of screen width
 const itemMargin = width * 0.05; // 5% of screen width
 const snapInterval = itemWidth + itemMargin * 2; // Calculate snap interval
 const Experiences = () => {
+    const navigation = useNavigation()
     const data = [
         { name: "PBR ", desc: "Dpl Project here" },
         { name: "MM  ", desc: "Contour Project here" },
@@ -26,7 +29,8 @@ const Experiences = () => {
                 snapToInterval={snapInterval}
                 snapToAlignment="center"
                 renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.renderItemView}>
+                    <TouchableOpacity style={styles.renderItemView}
+                        onPress={() => navigation.navigate(ScreenNames.ACTIVITIES)}>
                         <Text style={styles.titleStyle}>{item.name}</Text>
                         <Text style={styles.descStyle}>{item.desc}</Text>
                     </TouchableOpacity>
