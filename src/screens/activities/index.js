@@ -53,11 +53,11 @@ const renderTabBar = props => (
             )
         }}
     />)
-const Activities = () => {
+const Activities = ({ navigation }) => {
     const [index, setIndex] = useState(0)
     return (
         <View style={styles.safeAreaView}>
-            <Header title={Constants.ACTIVITIES} />
+            <Header title={Constants.ACTIVITIES} pressBack={() => navigation.goBack()} />
             <TabView
                 lazy
                 navigationState={{ index, routes }}

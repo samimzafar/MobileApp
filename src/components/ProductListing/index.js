@@ -1,27 +1,16 @@
-import { useEffect, useState } from "react"
-import { FlatList, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import Theme from "../../theme"
 import SkeletonPlaceholder from "react-native-skeleton-placeholder"
 import FastImage from "react-native-fast-image"
+import { LoadingState } from "../../utils/AppConst"
+import useProductListing from "./useProductListing"
 const ProductFlatList = () => {
     const list = [1, 2, 3]
-    const [productData, setProductData] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    useEffect(() => {
-        async function renderFunction() {
-            fetch('https://dummyjson.com/products?limit=10&skip=0&select=title,price,thumbnail,category,brand,shippingInformation')
-                .then(res => res.json())
-                .then(({ products }) => {
-                    setProductData(products)
-                    setIsLoading(false)
-                });
-        }
-        renderFunction()
-    }, [])
-    const _renderItem = ({ item }) => {
+    const { skip, isLoading, setIsLoading, productData, getProductListing } = useProductListing()
+    const _renderItem = ({ item, index }) => {
         return (
-            <View key={item?.id} style={styles.renderItemView}>
+            <View style={styles.renderItemView} key={index}>
                 <Text style={styles.textStyle}>{item?.title}</Text>
                 <Text style={styles.textStyle}>{item?.price}</Text>
                 <Text style={styles.textStyle}>{item?.category}</Text>
@@ -34,21 +23,40 @@ const ProductFlatList = () => {
         )
     }
     return (
-        <View
-        // style={{ backgroundColor: "red", alignItems: "center", justifyContent: "center" }}
-        >
-            {isLoading ? <SkeletonPlaceholder borderRadius={4}>
-                {list.map((item, index) =>
-                (
-                    <SkeletonPlaceholder.Item width={wp(80)}
-                        height={hp(30)} borderRadius={5}
-                        marginBottom={hp(2)} marginTop={hp(2)}
-                        key={index} />
-                )
-                )}
-            </SkeletonPlaceholder> : <FlatList data={productData}
+        <View>
+            {isLoading == LoadingState.INITIAL ? <SkeletonPlaceholder>
+                <View style={{ marginTop: hp(10) }}>
+                    {list.map((item, index) => (
+                        <SkeletonPlaceholder.Item
+                            width={wp(80)}
+                            height={hp(30)}
+                            borderRadius={wp(6)}
+                            marginBottom={hp(2)}
+                            marginTop={hp(2)}
+                            key={index} />
+                    ))}
+                </View>
+            </SkeletonPlaceholder> : <FlatList
+                data={productData}
+                keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
-                renderItem={_renderItem} />
+                contentContainerStyle={styles.flatListContentContainer}
+                renderItem={_renderItem}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                onEndReachedThreshold={0.5}
+                onEndReached={() => {
+                    setIsLoading(LoadingState.FETCH)
+                    getProductListing({ skip: skip + 10 })
+                }}
+                ListFooterComponent={() => {
+                    return isLoading == LoadingState.FETCH && (
+                        <View>
+                            <ActivityIndicator />
+                        </View>
+                    )
+                }}
+            />
             }
         </View>
     )
@@ -72,6 +80,9 @@ const styles = StyleSheet.create({
         height: wp(50),
         width: wp(50),
         resizeMode: "contain"
+    },
+    flatListContentContainer: {
+        paddingBottom: hp(7)
     }
 })
 export default ProductFlatList

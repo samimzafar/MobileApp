@@ -6,3 +6,9 @@ export const Constants = {
     EXPERIENCES: "Experiences",
     JOURNEYS: "Journeys"
 }
+
+export const LoadingState = {
+    INITIAL: "initial",
+    FETCH: "fetch",
+    REFRESH: "refresh",
+}
