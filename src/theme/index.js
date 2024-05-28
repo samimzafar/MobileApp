@@ -18,7 +18,8 @@ const Theme = {
     },
     icons: {
         homeIcon: require("../assets/images/checkCircle.png"),
-        blueHeader: require("../assets/images/blueHeader.png")
+        blueHeader: require("../assets/images/blueHeader.png"),
+        wifi: require("../assets/images/wifi.png")
     }
 };
 export default Theme;

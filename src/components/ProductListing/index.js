@@ -4,10 +4,12 @@ import Theme from "../../theme"
 import SkeletonPlaceholder from "react-native-skeleton-placeholder"
 import FastImage from "react-native-fast-image"
 import { LoadingState } from "../../utils/AppConst"
-import useProductListing from "./useProductListing"
-const ProductFlatList = () => {
+import NoNetInfo from "../NoNetInfo"
+import EmptyTrackTextMessgeRenderer from "../EmptyMessage"
+import useActivities from "../../screens/activities/useActivities"
+const ProductFlatList = ({ id }) => {
     const list = [1, 2, 3]
-    const { skip, isLoading, setIsLoading, productData, getProductListing } = useProductListing()
+    const { data, skip, isLoading, setIsLoading, getDataListing, netInfo } = useActivities({ index: id })
     const _renderItem = ({ item, index }) => {
         return (
             <View style={styles.renderItemView} key={index}>
@@ -24,20 +26,22 @@ const ProductFlatList = () => {
     }
     return (
         <View>
-            {isLoading == LoadingState.INITIAL ? <SkeletonPlaceholder>
-                <View style={{ marginTop: hp(10) }}>
-                    {list.map((item, index) => (
-                        <SkeletonPlaceholder.Item
-                            width={wp(80)}
-                            height={hp(30)}
-                            borderRadius={wp(6)}
-                            marginBottom={hp(2)}
-                            marginTop={hp(2)}
-                            key={index} />
-                    ))}
-                </View>
-            </SkeletonPlaceholder> : <FlatList
-                data={productData}
+            {isLoading == LoadingState.INITIAL ? (
+                <SkeletonPlaceholder>
+                    <View style={{ marginTop: hp(10) }}>
+                        {list.map((item, index) => (
+                            <SkeletonPlaceholder.Item
+                                width={wp(80)}
+                                height={hp(30)}
+                                borderRadius={wp(6)}
+                                marginBottom={hp(2)}
+                                marginTop={hp(2)}
+                                key={index} />
+                        ))}
+                    </View>
+                </SkeletonPlaceholder>
+            ) : <FlatList
+                data={data}
                 keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.flatListContentContainer}
@@ -45,9 +49,18 @@ const ProductFlatList = () => {
                 initialNumToRender={10}
                 maxToRenderPerBatch={10}
                 onEndReachedThreshold={0.5}
+                ListEmptyComponent={() => {
+                    if (!netInfo?.isInternetReachable && isLoading !== LoadingState.INITIAL) {
+                        return <NoNetInfo />
+                    } else if ((!isLoading && data?.length == 0)) {
+                        return <EmptyTrackTextMessgeRenderer />
+                    }
+                }}
                 onEndReached={() => {
-                    setIsLoading(LoadingState.FETCH)
-                    getProductListing({ skip: skip + 10 })
+                    if (netInfo?.isInternetReachable) {
+                        setIsLoading(LoadingState.FETCH)
+                        getDataListing({ skip: skip + 10 })
+                    }
                 }}
                 ListFooterComponent={() => {
                     return isLoading == LoadingState.FETCH && (

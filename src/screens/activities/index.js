@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, } from 'react-native'
 import React, { useState } from 'react'
 import { Header } from '../../components/Header'
-import { Constants } from '../../utils/AppConst'
+import { Constants, routes } from '../../utils/AppConst'
 import { TabView, TabBar } from 'react-native-tab-view';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import ProductFlatList from '../../components/ProductListing';
@@ -10,51 +10,43 @@ import RecipesFlatList from '../../components/RecipesListing';
 import PostsFlatList from '../../components/PostListing';
 import UsersFlatList from '../../components/UsersListing';
 import Theme from '../../theme';
-const routes = [
-    { key: 'Products', title: "P" },
-    { key: 'Carts', title: "C" },
-    { key: 'Recipes', title: "R" },
-    { key: 'Posts', title: "P" },
-    { key: 'Users', title: "U" },
-];
-const renderScene = (route) => {
-    switch (route.key) {
-        case 'Products':
-            return <ProductFlatList />;
-        case 'Carts':
-            return <CartFlatList />;
-        case 'Recipes':
-            return <RecipesFlatList />;
-        case 'Posts':
-            return <PostsFlatList />;
-        case 'Users':
-            return <UsersFlatList />;
-        default:
-            return null;
-    }
-};
-
-const renderTabBar = props => (
-    <TabBar
-        {...props}
-        indicatorStyle={{ backgroundColor: '#fff' }}
-        style={{
-            backgroundColor: '#fff'
-        }}
-        renderLabel={({ route, focused, color }) => {
-            return (
-                <View style={{ alignItems: 'center', }}>
-                    <View style={styles.tabViewStyle(route, focused)}>
-                        {/* <Image style={styles.tabImg} source={route.icon} resizeMode='contain' /> */}
-                        <Text style={styles.tabTitleStyle(focused)}>{route.title}</Text>
-                    </View>
-                    <View style={styles.tabDot(focused, route)} />
-                </View>
-            )
-        }}
-    />)
 const Activities = ({ navigation }) => {
     const [index, setIndex] = useState(0)
+    const renderScene = (route) => {
+        switch (route.id) {
+            case 1:
+                return <ProductFlatList id={1} />;
+            case 2:
+                return <CartFlatList id={2} />;
+            case 3:
+                return <RecipesFlatList id={3} />;
+            case 4:
+                return <PostsFlatList id={4} />;
+            case 5:
+                return <UsersFlatList id={5} />;
+            default:
+                return null;
+        }
+    };
+
+    const renderTabBar = props => (
+        <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: '#fff' }}
+            style={{
+                backgroundColor: '#fff'
+            }}
+            renderLabel={({ route, focused, color }) => {
+                return (
+                    <View style={{ alignItems: 'center', }}>
+                        <View style={styles.tabViewStyle(route, focused)}>
+                            <Text style={styles.tabTitleStyle(focused)}>{route.title}</Text>
+                        </View>
+                        <View style={styles.tabDot(focused, route)} />
+                    </View>
+                )
+            }}
+        />)
     return (
         <View style={styles.safeAreaView}>
             <Header title={Constants.ACTIVITIES} pressBack={() => navigation.goBack()} />

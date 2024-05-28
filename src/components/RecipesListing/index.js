@@ -1,23 +1,14 @@
-import { useEffect, useState } from "react"
-import { FlatList, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import Theme from "../../theme"
 import SkeletonPlaceholder from "react-native-skeleton-placeholder"
-const RecipesFlatList = () => {
+import { LoadingState } from "../../utils/AppConst"
+import NoNetInfo from "../NoNetInfo"
+import EmptyTrackTextMessgeRenderer from "../EmptyMessage"
+import useActivities from "../../screens/activities/useActivities"
+const RecipesFlatList = ({ id }) => {
+    const { data, skip, isLoading, setIsLoading, getDataListing, netInfo } = useActivities({ index: id })
     const list = [1, 2, 3]
-    const [recipesData, setRecipesData] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    useEffect(() => {
-        async function renderFunction() {
-            fetch('https://dummyjson.com/recipes?limit=10&skip=0')
-                .then(res => res.json())
-                .then(({ recipes }) => {
-                    setRecipesData(recipes)
-                    setIsLoading(false)
-                });
-        }
-        renderFunction()
-    }, [])
     const _renderItem = ({ item }) => {
         return (
             <View key={item?.id} style={styles.renderItemView}>
@@ -25,25 +16,58 @@ const RecipesFlatList = () => {
                 <Text style={styles.textStyle}>{item?.difficulty}</Text>
                 <Text style={styles.textStyle}>{item?.cuisine}</Text>
                 <Text style={styles.textStyle}>{item?.rating}</Text>
-                <Text style={styles.textStyle}>{item?.instructions[0]}</Text>
-                <Text style={styles.textStyle}>{item?.mealType[0]}</Text>
+                <Text style={styles.textStyle}>{item?.instructions?.[0]}</Text>
+                <Text style={styles.textStyle}>{item?.mealType?.[0]}</Text>
             </View>
         )
     }
     return (
         <View>
-            {isLoading ? <SkeletonPlaceholder borderRadius={4}>
-                {list.map((item, index) =>
-                (
-                    <SkeletonPlaceholder.Item width={wp(80)}
-                        height={hp(30)} borderRadius={5}
-                        marginBottom={hp(2)} marginTop={hp(2)}
-                        key={index} />
-                )
-                )}
-            </SkeletonPlaceholder> : <FlatList data={recipesData}
+            {isLoading == LoadingState.INITIAL ? (
+                <SkeletonPlaceholder>
+                    <View style={{ marginTop: hp(10) }}>
+                        {list.map((item, index) => (
+                            <SkeletonPlaceholder.Item
+                                width={wp(80)}
+                                height={hp(30)}
+                                borderRadius={wp(6)}
+                                marginBottom={hp(2)}
+                                marginTop={hp(2)}
+                                key={index} />
+                        ))}
+                    </View>
+                </SkeletonPlaceholder>
+            ) : <FlatList
+                data={data}
+                keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
-                renderItem={_renderItem} />
+                contentContainerStyle={styles.flatListContentContainer}
+                renderItem={_renderItem}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                onEndReachedThreshold={0.5}
+                ListEmptyComponent={() => {
+                    if (!netInfo?.isInternetReachable && isLoading !== LoadingState.INITIAL) {
+                        return <NoNetInfo />
+
+                    } else if ((!isLoading && data?.length == 0)) {
+                        return <EmptyTrackTextMessgeRenderer />
+                    }
+                }}
+                onEndReached={() => {
+                    if (netInfo?.isInternetReachable) {
+                        setIsLoading(LoadingState.FETCH)
+                        getDataListing({ skip: skip + 10 })
+                    }
+                }}
+                ListFooterComponent={() => {
+                    return isLoading == LoadingState.FETCH && (
+                        <View>
+                            <ActivityIndicator />
+                        </View>
+                    )
+                }}
+            />
             }
         </View>
     )
@@ -67,6 +91,9 @@ const styles = StyleSheet.create({
         height: wp(50),
         width: wp(50),
         resizeMode: "contain"
+    },
+    flatListContentContainer: {
+        paddingBottom: hp(7)
     }
 })
 export default RecipesFlatList

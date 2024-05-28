@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react"
-import { FlatList, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import Theme from "../../theme"
 import SkeletonPlaceholder from "react-native-skeleton-placeholder"
-const PostsFlatList = () => {
+import useActivities from "../../screens/activities/useActivities"
+import NoNetInfo from "../NoNetInfo"
+import { LoadingState } from "../../utils/AppConst"
+import EmptyTrackTextMessgeRenderer from "../EmptyMessage"
+const PostsFlatList = ({ id }) => {
+    const { data, skip, isLoading, setIsLoading, getDataListing, netInfo } = useActivities({ index: id })
     const list = [1, 2, 3]
-    const [postsData, setPostsData] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    useEffect(() => {
-        async function renderFunction() {
-            fetch('https://dummyjson.com/posts?limit=10&skip=0')
-                .then(res => res.json())
-                .then(({ posts }) => {
-                    setPostsData(posts)
-                    setIsLoading(false)
-                });
-        }
-        renderFunction()
-    }, [])
-    const _renderItem = ({ item }) => {
+    const _renderItem = ({ item, index }) => {
         return (
-            <View key={item?.id} style={styles.renderItemView}>
+            <View key={index} style={styles.renderItemView}>
                 <Text style={styles.textStyle}>{item?.title}</Text>
                 <Text style={styles.textStyle}>{item?.body}</Text>
                 <Text style={styles.textStyle}>{item?.tags?.[0]}</Text>
@@ -33,18 +25,51 @@ const PostsFlatList = () => {
     }
     return (
         <View>
-            {isLoading ? <SkeletonPlaceholder borderRadius={4}>
-                {list.map((item, index) =>
-                (
-                    <SkeletonPlaceholder.Item width={wp(80)}
-                        height={hp(30)} borderRadius={5}
-                        marginBottom={hp(2)} marginTop={hp(2)}
-                        key={index} />
-                )
-                )}
-            </SkeletonPlaceholder> : <FlatList data={postsData}
+            {isLoading == LoadingState.INITIAL ? (
+                <SkeletonPlaceholder>
+                    <View style={{ marginTop: hp(10) }}>
+                        {list.map((item, index) => (
+                            <SkeletonPlaceholder.Item
+                                width={wp(80)}
+                                height={hp(30)}
+                                borderRadius={wp(6)}
+                                marginBottom={hp(2)}
+                                marginTop={hp(2)}
+                                key={index} />
+                        ))}
+                    </View>
+                </SkeletonPlaceholder>
+            ) : <FlatList
+                data={data}
+                keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
-                renderItem={_renderItem} />
+                contentContainerStyle={styles.flatListContentContainer}
+                renderItem={_renderItem}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                onEndReachedThreshold={0.5}
+                ListEmptyComponent={() => {
+                    if (!netInfo?.isInternetReachable && isLoading !== LoadingState.INITIAL) {
+                        return <NoNetInfo />
+
+                    } else if ((!isLoading && data?.length == 0)) {
+                        return <EmptyTrackTextMessgeRenderer />
+                    }
+                }}
+                onEndReached={() => {
+                    if (netInfo?.isInternetReachable) {
+                        setIsLoading(LoadingState.FETCH)
+                        getDataListing({ skip: skip + 10 })
+                    }
+                }}
+                ListFooterComponent={() => {
+                    return isLoading == LoadingState.FETCH && (
+                        <View>
+                            <ActivityIndicator />
+                        </View>
+                    )
+                }}
+            />
             }
         </View>
     )
@@ -68,6 +93,9 @@ const styles = StyleSheet.create({
         height: wp(50),
         width: wp(50),
         resizeMode: "contain"
+    },
+    flatListContentContainer: {
+        paddingBottom: hp(7)
     }
 })
 export default PostsFlatList
