@@ -1,7 +1,8 @@
 const Theme = {
     colors: {
         COLOR_TEXT: "rgba(135, 135, 135, 1)",
-        SKY_BLUE_COLOR: "rgba(91, 174, 252, 1)"
+        SKY_BLUE_COLOR: "rgba(91, 174, 252, 1)",
+        GREEN_RGBA: "rgba(50, 191, 110, 1)"
     },
     fonts: {
         FONT_NUNITO_BOLD: 'Nunito-Bold',
